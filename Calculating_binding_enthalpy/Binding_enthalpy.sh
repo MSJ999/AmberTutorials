@@ -33,11 +33,25 @@ pmemd.cuda -O -i npt_md2.in -c ${j}_npt.rst7 -p ${j}.prmtop -o ${j}_npt2.out -r 
 pmemd.cuda -O -i npt_md.in -c ${j}_${i}_nvt.rst7 -p ${j}_${i}.prmtop -o ${j}_${i}_npt.out -r ${j}_${i}_npt.rst7 -x ${j}_${i}_npt.nc
 pmemd.cuda -O -i npt_md2.in -c ${j}_${i}_npt.rst7 -p ${j}_${i}.prmtop -o ${j}_${i}_npt2.out -r ${j}_${i}_npt2.rst7 -x ${j}_${i}_npt2.nc
 
+vol=`grep VOL water_npt2.out | head -n -2 | awk '{sum+=$9}END{printf "%10.7f\n",(sum/NR)^(1/3)}'`
+cpptraj.cuda -p water.prmtop -y water_npt2.rst7 -x water_prod.rst7
+sed -i '$d' ${i}_prod.rst7
+echo "  $vol  $vol  $vol  90.0000000  90.0000000  90.0000000" >> water_prod.rst7
+
 vol=`grep VOL ${i}_npt2.out | head -n -2 | awk '{sum+=$9}END{printf "%10.7f\n",(sum/NR)^(1/3)}'`
 cpptraj.cuda -p ${i}.prmtop -y ${i}_npt2.rst7 -x ${i}_prod.rst7
 sed -i '$d' ${i}_prod.rst7
 echo "  $vol  $vol  $vol  90.0000000  90.0000000  90.0000000" >> ${i}_prod.rst7
 
+vol=`grep VOL ${j}_npt2.out | head -n -2 | awk '{sum+=$9}END{printf "%10.7f\n",(sum/NR)^(1/3)}'`
+cpptraj.cuda -p ${j}.prmtop -y ${j}_npt2.rst7 -x ${j}_prod.rst7
+sed -i '$d' ${j}_prod.rst7
+echo "  $vol  $vol  $vol  90.0000000  90.0000000  90.0000000" >> ${j}_prod.rst7
+
+vol=`grep VOL ${j}_${i}_npt2.out | head -n -2 | awk '{sum+=$9}END{printf "%10.7f\n",(sum/NR)^(1/3)}'`
+cpptraj.cuda -p ${j}_${i}.prmtop -y ${j}_${i}_npt2.rst7 -x ${j}_${i}_prod.rst7
+sed -i '$d' ${j}_${i}_prod.rst7
+echo "  $vol  $vol  $vol  90.0000000  90.0000000  90.0000000" >> ${j}_${i}_prod.rst7
 #Production
 pmemd.cuda -O -i prod_md.in -c water_prod.rst7 -p water.prmtop -o water_prod1.out -r water_prod1.rst7 -x water_prod1.nc
 pmemd.cuda -O -i prod_md.in -c ${i}_prod.rst7 -p ${i}.prmtop -o ${i}_prod1.out -r ${i}_prod1.rst7 -x ${i}_prod1.nc
