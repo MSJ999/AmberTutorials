@@ -1,0 +1,14 @@
+B2: initial minimization solvent
+ &cntrl
+  imin   = 1,
+  maxcyc = 10000,
+  ncyc   = 500,
+  ntb    = 1,
+  ntr    = 1,
+  cut    = 10.0
+/
+Hold the Guest (B2) Fixed
+100.0
+RES 1
+END
+END

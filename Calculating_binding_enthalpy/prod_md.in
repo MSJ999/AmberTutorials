@@ -1,0 +1,27 @@
+Production simulations
+ &cntrl
+  imin  = 0,
+  irest    = 1,
+  ntx      = 5,
+  ntb      = 1,
+  cut      = 9.0,
+  ntr      = 0,
+  ntc      = 2,
+  ntf      = 2,
+  tempi    = 300.0,
+  temp0    = 300.0,
+  ntt      = 3,
+  gamma_ln = 1.0,
+  ig       = -1,
+  iwrap    = 1,
+  ioutfm   = 1,
+  nstlim   = 250000000
+  dt       = 0.002,
+  ntpr = 500, ntwx = 500, ntwr = -25000000
+ /
+ &ewald
+  nfft1=32,
+  nfft2=32,
+  nfft3=32,
+  order=4
+ /
